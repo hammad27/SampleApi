@@ -1,6 +1,8 @@
 
 using Microsoft.EntityFrameworkCore;
 using SampleApi.Data;
+using SampleApi.Security;
+using SampleApi.Services;
 using Scalar.AspNetCore;
 
 namespace SampleApi
@@ -19,6 +21,9 @@ namespace SampleApi
 
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IPasswordHasher, Pbkdf2PasswordHasher>();
+            builder.Services.AddScoped<IAuthService, AuthService>();
 
             var app = builder.Build();
 
